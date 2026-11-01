@@ -1,0 +1,25 @@
+---
+interface Props {
+  size?: number;
+}
+
+const { size = 64 } = Astro.props;
+---
+
+<svg class="monogram" width={size} height={size} viewBox="0 0 60 60" aria-hidden="true">
+  <rect x="1.5" y="1.5" width="57" height="57" fill="none" stroke="currentColor" stroke-width="3" />
+  <line x1="11" y1="48" x2="49" y2="12" stroke="currentColor" stroke-width="2.5" />
+  <text x="8" y="25" font-size="21">A</text>
+  <text x="37" y="53" font-size="21">S</text>
+</svg>
+
+<style>
+  .monogram {
+    flex: none;
+  }
+
+  .monogram text {
+    fill: currentColor;
+    font-family: var(--sans);
+  }
+</style>

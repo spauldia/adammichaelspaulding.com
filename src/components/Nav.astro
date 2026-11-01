@@ -1,0 +1,60 @@
+---
+import Monogram from "./Monogram.astro";
+import { nav } from "../data/site";
+
+interface Props {
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+const path = Astro.url.pathname;
+---
+
+<header class:list={["site-nav", { overlay }]} data-nav>
+  <div class="nav-inner">
+    <a class="brand" href="/" aria-label="Home">
+      <Monogram size={34} />
+      <span>Adam Michael Spaulding</span>
+    </a>
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="nav-links" data-menu-toggle>
+      <span class="sr-only">Menu</span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <nav id="nav-links" class="nav-links" aria-label="Main">
+      {
+        nav.map((link) => (
+          <a href={link.href} aria-current={path.startsWith(link.href) ? "page" : undefined}>
+            {link.label}
+          </a>
+        ))
+      }
+      <a class="nav-contact" href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>("[data-nav]");
+  const toggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+
+  if (header && toggle) {
+    const setScrolled = () => header.classList.toggle("scrolled", window.scrollY > 24);
+    setScrolled();
+    window.addEventListener("scroll", setScrolled, { passive: true });
+
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open));
+      header.classList.toggle("menu-open", !open);
+    });
+
+    header.querySelectorAll(".nav-links a").forEach((link) =>
+      link.addEventListener("click", () => {
+        toggle.setAttribute("aria-expanded", "false");
+        header.classList.remove("menu-open");
+      }),
+    );
+  }
+</script>

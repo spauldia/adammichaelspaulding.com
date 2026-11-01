@@ -1,0 +1,98 @@
+---
+import Monogram from "../components/Monogram.astro";
+import Base from "../layouts/Base.astro";
+import { profile } from "../data/profile";
+---
+
+<Base title="Resume" description={profile.about[0].split(". ")[0] + "."}>
+  <main class="container resume">
+    <div class="resume-toolbar">
+      <h1>Resume</h1>
+      <a class="button dark" href="/Adam_Spaulding_Resume.pdf" download>Download PDF</a>
+    </div>
+
+    <header class="resume-header">
+      <div class="identity">
+        <Monogram size={64} />
+        <div>
+          <h2>{profile.name}</h2>
+          <p>{profile.headline}</p>
+        </div>
+      </div>
+      <ul class="contact">
+        <li>{profile.location}</li>
+        <li><a href={`mailto:${profile.email}`}>{profile.email}</a></li>
+        {profile.links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      </ul>
+    </header>
+
+    <section aria-labelledby="summary">
+      <h3 class="bar" id="summary">Summary</h3>
+      {profile.about.map((paragraph) => <p class="summary">{paragraph}</p>)}
+    </section>
+
+    <section aria-labelledby="experience">
+      <h3 class="bar" id="experience">Experience</h3>
+      {
+        profile.jobs.map((job) => (
+          <article class="job">
+            <div class="row job-header">
+              <h4>
+                {job.company} <span class="description">{job.description}</span>
+              </h4>
+              <span class="dates">{job.dates}</span>
+            </div>
+            {job.roles.map((role) => (
+              <div class="role">
+                <div class="row">
+                  <h5>
+                    {role.title}
+                    {role.team && <span class="team"> | {role.team}</span>}
+                  </h5>
+                  <span class="dates">{role.dates}</span>
+                </div>
+                {role.highlights.length > 0 && (
+                  <ul>
+                    {role.highlights.map((item) => (
+                      <li>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </article>
+        ))
+      }
+    </section>
+
+    <section aria-labelledby="skills">
+      <h3 class="bar" id="skills">Skills</h3>
+      <dl class="skills">
+        {
+          profile.skills.map((group) => (
+            <>
+              <dt>{group.label}</dt>
+              <dd>{group.items}</dd>
+            </>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section aria-labelledby="education">
+      <h3 class="bar" id="education">Education</h3>
+      <ul class="education">
+        {
+          profile.education.map((item) => (
+            <li class="row">
+              <span>
+                <strong>{item.degree}</strong> <span class="school">| {item.school}</span>
+              </span>
+              <span class="dates">{item.year}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </main>
+</Base>

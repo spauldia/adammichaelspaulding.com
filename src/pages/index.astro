@@ -1,0 +1,45 @@
+---
+import Base from "../layouts/Base.astro";
+import { focusAreas, hero } from "../data/site";
+---
+
+<Base description={hero.subline} overlayNav>
+  <main>
+    <section class="hero">
+      <img
+        class="hero-image"
+        src="/images/hero-2400.jpg"
+        srcset="/images/hero-1200.jpg 1200w, /images/hero-2400.jpg 2400w"
+        sizes="100vw"
+        alt=""
+        fetchpriority="high"
+      />
+      <div class="hero-shade" aria-hidden="true"></div>
+      <div class="hero-content">
+        <h1>{hero.headline}</h1>
+        <p>{hero.subline}</p>
+        <div class="hero-actions">
+          <a class="button light" href="/resume/">View resume</a>
+          <a class="button outline-light" href="/about/">About</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="focus" aria-labelledby="focus-title">
+      <div class="container">
+        <h2 id="focus-title" class="serif-title">What the work looks like</h2>
+        <span class="rule" aria-hidden="true"></span>
+        <div class="focus-grid">
+          {
+            focusAreas.map((area) => (
+              <article>
+                <h3>{area.title}</h3>
+                <p>{area.text}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+  </main>
+</Base>

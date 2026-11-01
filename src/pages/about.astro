@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+import { about } from "../data/site";
+---
+
+<Base title="About" description={about.lead}>
+  <main>
+    <section class="page-banner">
+      <img class="banner-image" src="/images/hero-1200.jpg" alt="" />
+      <div class="hero-shade" aria-hidden="true"></div>
+      <h1>About</h1>
+    </section>
+
+    <div class="container prose">
+      <p class="lead">{about.lead}</p>
+
+      <h2 class="serif-title">Before engineering</h2>
+      {about.before.map((paragraph) => <p>{paragraph}</p>)}
+
+      <h2 class="serif-title">The switch</h2>
+      {about.switch.map((paragraph) => <p>{paragraph}</p>)}
+
+      <h2 class="serif-title">Outside of work</h2>
+      <p>{about.interests}</p>
+    </div>
+  </main>
+</Base>
