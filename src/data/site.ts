@@ -22,16 +22,16 @@ export const hero = {
 
 export const focusAreas: FocusArea[] = [
   {
+    title: "Backend systems",
+    text: "APIs and distributed services designed to scale, plus integrations with dozens of third-party systems, from on-premises servers to cloud platforms.",
+  },
+  {
     title: "Data platforms",
-    text: "Pipelines that move millions of rows into PostgreSQL every day on AWS, built to be fast, reliable, and cheap to run.",
+    text: "Event-driven pipelines and cloud infrastructure that process millions of records a day, built to be fast, reliable, and cheap to run.",
   },
   {
     title: "Production AI",
-    text: "AI agents that write and test integration code, with guardrails, evals, and safety checks built in.",
-  },
-  {
-    title: "Integrations",
-    text: "ERP integrations for more than 35 distributors, from on-premises connectors to cloud APIs.",
+    text: "AI agents and LLM features that automate multi-step workflows end to end, with guardrails, eval harnesses, and safety checks built in.",
   },
 ];
 
