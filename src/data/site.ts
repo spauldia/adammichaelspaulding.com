@@ -38,12 +38,13 @@ export const focusAreas: FocusArea[] = [
 export const about = {
   lead:
     "Backend and platform engineer at Pepper, an AI-first platform for independent distributors. " +
-    "The work centers on cloud data infrastructure and production AI: the pipelines that bring each customer's ERP data into the product, " +
-    "and the AI systems that set up new customers.",
+    "The work centers on cloud data infrastructure and production AI: high-volume pipelines that sync customer data into the product, " +
+    "and AI agents that automate onboarding, from raw data to a live application.",
   before: [
     "Adam spent six years as a clinical pharmacist in hospital emergency medicine and critical care, at Boston Medical Center, " +
       "Waterbury Hospital, Orange Regional Medical Center, and LewisGale Medical Center, where the last role was clinical pharmacy manager.",
-    "That career started with a PharmD and an ASHP-accredited residency at Buffalo General Medical Center, and went on to include board " +
+    "That career started with a PharmD and a residency at Buffalo General Medical Center accredited by the American Society of " +
+      "Health-System Pharmacists (ASHP), and went on to include board " +
       "certification in pharmacotherapy (BCPS), adjunct faculty appointments at Northeastern University and the University of Connecticut, " +
       "and published research and talks on emergency medicine pharmacotherapy. Adam also earned a Master of Business Administration (MBA).",
   ],
