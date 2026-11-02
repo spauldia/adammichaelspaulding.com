@@ -57,7 +57,7 @@ export const about = {
       "running the company's data warehouse, and from there to software engineering at Pepper. Emergency medicine and production systems turn out to have a lot in common. Both depend on accurate data " +
       "and calm decisions under pressure, and both need safety checks before anything reaches a patient or a customer.",
   ],
-  interests: "Reading, fitness and nutrition, Stoic philosophy, and mindfulness practice rooted in Zen Buddhism.",
+  interests: "Reading, fitness and nutrition, Stoic philosophy, and mindfulness meditation.",
 };
 
 export const contact = {
