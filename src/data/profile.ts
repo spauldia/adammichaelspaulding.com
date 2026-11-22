@@ -56,14 +56,15 @@ export const profile: Profile = {
     { label: "GitHub", href: "https://github.com/spauldia" },
   ],
   skills: [
-    { label: "Languages", items: "Python, SQL, TypeScript, JavaScript, Bash" },
+    { label: "Languages", items: "Python, Java, SQL, TypeScript, JavaScript, Bash" },
+    { label: "Frameworks", items: "FastAPI, Django, Spring Boot, React" },
     {
       label: "Backend and data",
-      items: "REST APIs (FastAPI, Django), PostgreSQL, Redis, Pydantic, Polars, pandas, DuckDB, Parquet, ETL/ELT",
+      items: "REST APIs, PostgreSQL, Redis, Pydantic, Polars, pandas, DuckDB, Parquet, ETL/ELT",
     },
     {
       label: "Cloud",
-      items: "AWS (ECS Fargate, Batch, Lambda, S3, DynamoDB, Aurora), Terraform, Docker, Linux, GitHub Actions CI/CD",
+      items: "AWS (ECS Fargate, Batch, Lambda, S3, DynamoDB, Aurora), Terraform, Docker, Linux, GitHub Actions CI/CD, Maven",
     },
     {
       label: "AI engineering",
@@ -94,6 +95,7 @@ export const profile: Profile = {
             "Rebuilt PostgreSQL ingestion with concurrent upserts, parallel validation, and Polars vectorization, making large runs 3x to 32x faster.",
             "Leading the consolidation of 29 client pricing systems into a single pricing engine. More than 12 have migrated, each at 97% or better price parity.",
             "Moved pricing pipelines to delta ingestion and content-based triggers, ending full reloads of files with more than 6 million rows.",
+            "Extend and maintain a Java data connector (Maven, JUnit) that moves data between distributors' IBM i (AS/400) ERP systems and Pepper over SFTP, including order import templates, scheduled exports, and installer checks.",
             "Built Claude Code skills and agent runbooks that let implementation teams extend ERP integrations on their own.",
           ],
         },
