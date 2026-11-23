@@ -13,7 +13,7 @@ export const projects: Project[] = [
         highlights: [
             "Python and FastAPI backend on AWS Lambda, with DynamoDB for per-visitor rate limits and a monthly spending cap.",
             "Claude Haiku 5.5 answers from the public profile plus a private notes file in S3, both in a cached system prompt, so answers stay tied to facts Adam wrote.",
-            "Infrastructure in Terraform (IAC). GitHub Actions runs tests and evals on every pull requeset and deploys with OIDC, so no AWS keys are stored in GitHub.",
+            "Infrastructure in Terraform (IaC). GitHub Actions runs tests and evals on every pull request and deploys with OIDC, so no AWS keys are stored in GitHub.",
             "An eval suite checks facts, off-topic questions and attempts to override the bot's instructions.",
         ],
         tech: ["Python", "FastAPI", "AWS Lambda", "DynamoDB", "Terraform", "GitHub Actions", "Claude API"],

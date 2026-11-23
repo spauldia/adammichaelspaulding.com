@@ -1,18 +1,105 @@
 ---
 import Base from "../layouts/Base.astro";
+import { projects } from "../data/projects";
 ---
 
 <Base title="Projects" description="Projects by Adam Michael Spaulding.">
-  <main class="placeholder">
+  <main class="projects">
     <div class="container narrow">
       <p class="eyebrow">Projects</p>
-      <h1>Currently compounding.</h1>
+      <h1>Things built on the side.</h1>
       <span class="rule" aria-hidden="true"></span>
-      <p>
-        New projects are being put together. Until they're ready, the resume covers recent work in data platforms and
-        production AI.
-      </p>
-      <a class="button dark" href="/resume/">View resume</a>
+
+      {
+        projects.map((project) => (
+          <article class="project">
+            <h2>{project.name}</h2>
+            <p class="summary">{project.summary}</p>
+            <ul>
+              {project.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+            <p class="tech">{project.tech.join(" · ")}</p>
+            <div class="project-actions">
+              <button class="button dark" type="button" data-open-chat>
+                Try it
+              </button>
+              <a class="button outline" href={project.codeUrl}>
+                View code
+              </a>
+            </div>
+          </article>
+        ))
+      }
     </div>
   </main>
 </Base>
+
+<style>
+  .projects {
+    padding: 96px 0;
+    text-align: center;
+  }
+
+  .projects h1 {
+    margin: 14px 0 0;
+    font-family: var(--display);
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .project {
+    padding: 32px 0;
+    border-top: 1px solid var(--rule);
+    text-align: left;
+  }
+
+  .project h2 {
+    margin: 0 0 8px;
+    font-family: var(--display);
+    font-size: 1.9rem;
+    font-weight: 400;
+  }
+
+  .project .summary {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+
+  .project ul {
+    margin: 0 0 16px;
+    padding-left: 20px;
+  }
+
+  .project li + li {
+    margin-top: 6px;
+  }
+
+  .tech {
+    margin: 0 0 24px;
+    color: var(--accent);
+    font-family: var(--caps);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .project-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .project-actions .button {
+    cursor: pointer;
+  }
+
+  .button.outline {
+    border-color: var(--navy);
+    color: var(--navy);
+  }
+</style>
