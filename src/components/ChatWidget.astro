@@ -1,0 +1,407 @@
+---
+import { chat } from "../data/chat";
+import { profile } from "../data/profile";
+
+const mailto = `mailto:${profile.email}`;
+---
+
+<div class="chat" data-api-url={chat.apiUrl} data-max-turns={chat.maxTurns}>
+  <button class="chat-toggle" type="button" aria-expanded="false" aria-controls="chat-panel">Ask about Adam</button>
+
+  <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Ask about Adam" hidden>
+    <header class="chat-header">
+      <p class="chat-title">Ask about Adam</p>
+      <button class="chat-close" type="button" aria-label="Close chat">&times;</button>
+    </header>
+
+    <div class="chat-log" aria-live="polite">
+      <p class="chat-message assistant">{chat.greeting}</p>
+      <div class="chat-examples">
+        {
+          chat.examples.map((question) => (
+            <button class="chat-example" type="button">
+              {question}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+
+    <form class="chat-form">
+      <label class="sr-only" for="chat-input">Your question</label>
+      <input
+        id="chat-input"
+        name="question"
+        type="text"
+        maxlength={chat.maxQuestionChars}
+        autocomplete="off"
+        placeholder="Ask a question"
+        required
+      />
+      <button class="chat-send" type="submit">Send</button>
+    </form>
+    <p class="chat-note">Answers come from an AI model and can be wrong. The resume is the source of truth.</p>
+  </section>
+
+  <template id="chat-reply-budget">
+    <p class="chat-message assistant">
+      I'd raise my chatbot's budget, but I'm still waiting on someone to raise mine. My <a href="/resume/">resume</a> has
+      all the same answers, and my <a href={mailto}>email</a> is open.
+    </p>
+  </template>
+
+  <template id="chat-reply-rate-limited">
+    <p class="chat-message assistant">
+      You've asked more questions than my budget can keep up with. Give it a minute, or skip the line and
+      <a href={mailto}>email me</a>.
+    </p>
+  </template>
+</div>
+
+<style>
+  .chat {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 50;
+    font-family: var(--sans);
+  }
+
+  .chat-toggle {
+    padding: 14px 22px;
+    border: 0;
+    border-radius: 999px;
+    background: #042433;
+    color: #ffffff;
+    font-family: var(--caps);
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 24px rgba(4, 36, 51, 0.25);
+    cursor: pointer;
+  }
+
+  .chat-toggle:hover {
+    background: #0b3b52;
+  }
+
+  .chat-panel {
+    display: flex;
+    flex-direction: column;
+    width: min(380px, calc(100vw - 32px));
+    height: min(560px, calc(100vh - 120px));
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    background: var(--paper);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+
+  .chat-panel[hidden] {
+    display: none;
+  }
+
+  .chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .chat-title {
+    margin: 0;
+    color: var(--accent);
+    font-family: var(--caps);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .chat-close {
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font-size: 1.6rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .chat-log {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .chat-message {
+    max-width: 90%;
+    margin: 0 0 12px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .chat-message.text {
+    white-space: pre-wrap;
+  }
+
+  .chat-message.assistant {
+    background: var(--soft);
+    color: var(--ink);
+  }
+
+  .chat-message.user {
+    margin-left: auto;
+    background: #042433;
+    color: #ffffff;
+  }
+
+  .chat-message.typing {
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .chat-examples {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .chat-example {
+    padding: 8px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--link);
+    font: inherit;
+    font-size: 0.9rem;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .chat-example:hover {
+    border-color: var(--accent);
+  }
+
+  .chat-form {
+    display: flex;
+    gap: 8px;
+    padding: 12px 16px 6px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .chat-form input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+    font-size: 0.95rem;
+  }
+
+  .chat-send {
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: #042433;
+    color: #ffffff;
+    font-family: var(--caps);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .chat-send:disabled,
+  .chat-form input:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+
+  .chat-note {
+    margin: 0;
+    padding: 0 16px 12px;
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  @media (max-width: 520px) {
+    .chat {
+      right: 16px;
+      bottom: 16px;
+      left: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .chat-panel {
+      width: 100%;
+      height: calc(100vh - 96px);
+    }
+  }
+
+  @media print {
+    .chat {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  type Role = "user" | "assistant";
+  type ReplyKind = "answer" | "rate_limited" | "budget";
+
+  interface ChatTurn {
+    role: Role;
+    content: string;
+  }
+
+  interface ChatResponse {
+    kind: ReplyKind;
+    reply: string;
+  }
+
+  const TEMPLATE_IDS: Record<Exclude<ReplyKind, "answer">, string> = {
+    budget: "chat-reply-budget",
+    rate_limited: "chat-reply-rate-limited",
+  };
+
+  function find<T extends Element>(root: ParentNode, selector: string): T {
+    const element = root.querySelector<T>(selector);
+    if (!element) {
+      throw new Error(`Chat widget is missing ${selector}`);
+    }
+    return element;
+  }
+
+  function recentTurns(turns: ChatTurn[], maxTurns: number): ChatTurn[] {
+    const recent = turns.slice(-maxTurns);
+    while (recent.length > 0 && recent[0].role !== "user") {
+      recent.shift();
+    }
+    return recent;
+  }
+
+  async function askApi(apiUrl: string, turns: ChatTurn[]): Promise<ChatResponse> {
+    try {
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: turns }),
+      });
+      if (!response.ok) {
+        return { kind: "budget", reply: "" };
+      }
+      return (await response.json()) as ChatResponse;
+    } catch {
+      return { kind: "budget", reply: "" };
+    }
+  }
+
+  function setUpChat(root: HTMLElement): void {
+    const apiUrl = root.dataset.apiUrl ?? "";
+    const maxTurns = Number(root.dataset.maxTurns ?? "7");
+    const toggle = find<HTMLButtonElement>(root, ".chat-toggle");
+    const panel = find<HTMLElement>(root, ".chat-panel");
+    const close = find<HTMLButtonElement>(root, ".chat-close");
+    const log = find<HTMLElement>(root, ".chat-log");
+    const examples = find<HTMLElement>(root, ".chat-examples");
+    const form = find<HTMLFormElement>(root, ".chat-form");
+    const input = find<HTMLInputElement>(root, "#chat-input");
+    const send = find<HTMLButtonElement>(root, ".chat-send");
+    const turns: ChatTurn[] = [];
+
+    function setOpen(open: boolean): void {
+      panel.hidden = !open;
+      toggle.hidden = open;
+      toggle.setAttribute("aria-expanded", String(open));
+      if (open) {
+        input.focus();
+      } else {
+        toggle.focus();
+      }
+    }
+
+    function addMessage(role: Role, text: string): HTMLElement {
+      const message = document.createElement("p");
+      message.className = `chat-message ${role} text`;
+      message.textContent = text;
+      log.append(message);
+      log.scrollTop = log.scrollHeight;
+      return message;
+    }
+
+    function addCannedReply(kind: Exclude<ReplyKind, "answer">): void {
+      const template = find<HTMLTemplateElement>(root, `#${TEMPLATE_IDS[kind]}`);
+      log.append(template.content.cloneNode(true));
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function setBusy(busy: boolean): void {
+      input.disabled = busy;
+      send.disabled = busy;
+    }
+
+    async function ask(question: string): Promise<void> {
+      examples.remove();
+      addMessage("user", question);
+      turns.push({ role: "user", content: question });
+      setBusy(true);
+      const typing = addMessage("assistant", "Thinking...");
+      typing.classList.add("typing");
+
+      const result = await askApi(apiUrl, recentTurns(turns, maxTurns));
+
+      typing.remove();
+      if (result.kind === "answer") {
+        addMessage("assistant", result.reply);
+        turns.push({ role: "assistant", content: result.reply });
+      } else {
+        addCannedReply(result.kind);
+        turns.pop();
+      }
+      setBusy(false);
+      input.focus();
+    }
+
+    toggle.addEventListener("click", () => setOpen(true));
+    close.addEventListener("click", () => setOpen(false));
+    panel.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    });
+
+    examples.querySelectorAll<HTMLButtonElement>(".chat-example").forEach((button) => {
+      button.addEventListener("click", () => void ask(button.textContent?.trim() ?? ""));
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const question = input.value.trim();
+      if (!question) {
+        return;
+      }
+      input.value = "";
+      void ask(question);
+    });
+
+    document.querySelectorAll<HTMLElement>("[data-open-chat]").forEach((opener) => {
+      opener.addEventListener("click", () => setOpen(true));
+    });
+  }
+
+  const chatRoot = document.querySelector<HTMLElement>(".chat");
+  if (chatRoot) {
+    setUpChat(chatRoot);
+  }
+</script>

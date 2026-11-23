@@ -1,0 +1,33 @@
+[project]
+name = "site-chat-api"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "anthropic>=2.12.0",
+    "boto3>=1.44.9",
+    "fastapi>=0.165.0",
+    "mangum>=0.22.0",
+    "pydantic-settings>=2.16.3",
+]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.28.1",
+    "moto[dynamodb,s3,ssm]>=5.2.5",
+    "pytest>=9.2.0",
+    "pyyaml>=6.0.4",
+    "ruff>=0.17.6",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+filterwarnings = ["ignore::DeprecationWarning:mangum.*"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py313"
+extend-exclude = ["build", "dist"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
