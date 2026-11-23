@@ -21,10 +21,10 @@ variable "allowed_origins" {
   default     = ["https://adammichaelspaulding.com", "http://localhost:4321"]
 }
 
-variable "github_repository" {
-  description = "GitHub repository allowed to deploy, as owner/name."
+variable "github_oidc_subject_prefix" {
+  description = "OIDC subject prefix of the repository allowed to deploy, from GitHub's actions/oidc/customization/sub API."
   type        = string
-  default     = "spauldia/adammichaelspaulding.com"
+  default     = "repo:spauldia@104309279/adammichaelspaulding.com@1442312390"
 }
 
 variable "alert_email" {
