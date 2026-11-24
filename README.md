@@ -1,8 +1,19 @@
 # adammichaelspaulding.com
 
-My personal website. Built with Astro and hosted on GitHub Pages.
+My personal website, with an "Ask about Adam" chatbot. The site is built with Astro and hosted on GitHub Pages. The chatbot runs on a Python API on AWS Lambda that calls Claude.
 
-## Running it locally
+## Layout
+
+| Folder | What it holds |
+|---|---|
+| `src/` | The site. Content is in `src/data/` |
+| `api/` | The chat API: FastAPI on AWS Lambda, with DynamoDB rate limits and a monthly spending cap |
+| `infra/` | Terraform for the AWS resources |
+| `.github/workflows/` | The site deploy, and the chat API's tests, evals and deploy |
+
+The chatbot answers from `/profile.json`, which is built from `src/data/`, plus a private notes file kept outside this repo.
+
+## Running the site locally
 
 You'll need Node 24.
 
@@ -11,4 +22,22 @@ npm install
 npm run dev
 ```
 
-The content is in `src/data/profile.ts`. Pushing to `main` deploys the site.
+The chat widget calls the live API, which accepts requests from `http://localhost:4321`.
+
+## Testing the chat API
+
+You'll need uv. Run from `api/`:
+
+```bash
+uv sync
+uv run pytest
+uv run ruff check .
+uv run ruff format --check .
+```
+
+## Deploying
+
+- Pushing to `main` deploys the site. Pushes that only change `api/` or `infra/` skip the site deploy.
+- Pull requests that change `api/` or `src/data/` run the API tests and evals.
+- Pushing to `main` with changes in `api/` deploys the API through GitHub OIDC, so no AWS keys are stored in GitHub.
+- Changes in `infra/` are applied by hand with `terraform plan` and `terraform apply`.
