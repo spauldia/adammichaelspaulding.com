@@ -36,6 +36,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={new URL("/images/hero-1200.jpg", Astro.site)} />
+    <script
+      is:inline
+      data-goatcounter="https://adammichaelspaulding.goatcounter.com/count"
+      async
+      src="https://gc.zgo.at/count.js"></script>
   </head>
   <body>
     <Nav overlay={overlayNav} />
