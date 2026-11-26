@@ -6,7 +6,15 @@ const mailto = `mailto:${profile.email}`;
 ---
 
 <div class="chat" data-api-url={chat.apiUrl} data-max-turns={chat.maxTurns}>
-  <button class="chat-toggle" type="button" aria-expanded="false" aria-controls="chat-panel">Ask about Adam</button>
+  <button
+    class="chat-toggle"
+    type="button"
+    aria-expanded="false"
+    aria-controls="chat-panel"
+    data-goatcounter-click="chat-open"
+  >
+    Ask about Adam
+  </button>
 
   <section class="chat-panel" id="chat-panel" role="dialog" aria-label="Ask about Adam" hidden>
     <header class="chat-header">
