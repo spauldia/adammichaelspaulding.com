@@ -45,10 +45,9 @@ export const profile: Profile = {
   headline: "Backend and Platform Engineer",
   location: "Nassau, NY",
   about: [
-    "Backend and platform engineer focused on scalable system design for cloud data infrastructure and production AI agents. " +
-      "Led platform work projected to save about $54K a year on AWS and cut large pipeline runtimes 3x to 32x. " +
-      "Core engineer on an AI product that automates client integrations, from raw ERP data to a live web app. " +
-      "Known for high output and end-to-end ownership.",
+    "Backend engineer specializing in data pipelines and ERP integrations, with a prior career in clinical pharmacy. " +
+      "Currently scaling a high-volume data platform while cutting its runtime and cost. " +
+      "Previously built client integrations and automated customer onboarding with AI.",
   ],
   email: "spaulding872@gmail.com",
   links: [
@@ -87,38 +86,37 @@ export const profile: Profile = {
       roles: [
         {
           title: "Software Engineer II",
-          team: "Platform",
+          team: "Infrastructure Platform",
           dates: "Jun 2026 – Present",
           highlights: [
-            "Drive performance and cost initiatives for the data ingestion platform, which runs about 25,000 pipelines a day on AWS Batch and Fargate.",
-            "Led the move from JSONL to Parquet storage. Files are 44x smaller, data written is down 93%, and S3 savings are projected at about $42K a year.",
-            "Rebuilt PostgreSQL ingestion with concurrent upserts, parallel validation, and Polars vectorization, making large runs 3x to 32x faster.",
-            "Leading the consolidation of 29 client pricing systems into a single pricing engine. More than 12 have migrated, each at 97% or better price parity.",
-            "Moved pricing pipelines to delta ingestion and content-based triggers, ending full reloads of files with more than 6 million rows.",
-            "Extend and maintain a Java data connector (Maven, JUnit) that moves data between distributors' IBM i (AS/400) ERP systems and Pepper over SFTP, including order import templates, scheduled exports, and installer checks.",
+            "Drive performance, stability, and cost initiatives for the data ingestion platform (~25K pipelines/day, AWS Batch/Fargate).",
+            "Led the move from JSONL to Parquet (44x smaller files, 93% less data written), part of ~$54K/yr projected AWS savings.",
+            "Rebuilt PostgreSQL ingestion with concurrent upserts, parallel validation, and Polars vectorization (3x to 32x faster).",
+            "Leading the consolidation of 29 client pricing systems into a single pricing engine.",
+            "Switched pricing pipelines to delta ingestion and content-based triggers, ending full reloads of 6M+ rows per run.",
+            "Maintain a Java connector (Maven, JUnit) that moves data between clients' IBM i ERP systems and Pepper over SFTP.",
             "Built Claude Code skills and agent runbooks that let implementation teams extend ERP integrations on their own.",
           ],
         },
         {
           title: "Software Engineer I",
-          team: "AI Integration Platform",
+          team: "AI-Powered ERP Integrations",
           dates: "Dec 2025 – Jun 2026",
           highlights: [
             "Core engineer on an AI product that turns raw ERP data into a live web app, with its ETL pipeline running within 10 minutes.",
-            "Hardened the product's coding agent (Claude Agent SDK) with hallucination checks, CI-gated pull requests, and A/B testing.",
-            "Built an LLM feature that converts plain-English data rules into configuration, backed by a live eval suite.",
-            "Led the switch from LLM-written code to a deterministic, spec-driven renderer for reproducible output at lower cost.",
-            "Created a drag-and-drop onboarding flow editor (React, TypeScript) and the self-serve portal backend. The first client went live in 2 days.",
-            "Extended the product to 7 ERPs, including QuickBooks Online and NetSuite.",
+            "Hardened the product's coding agent (Claude Agent SDK) with hallucination checks, CI-gated PRs, and A/B routing.",
+            "Built an LLM feature that converts plain-English data rules into config, backed by a live eval suite.",
+            "Built the self-serve portal backend (FastAPI) and its onboarding editor (React, TypeScript); first client live in 2 days.",
+            "Extended the product to 7 ERPs, including QuickBooks Online (OAuth) and NetSuite.",
           ],
         },
         {
           title: "Forward Deployed Engineer",
           dates: "Apr 2025 – Dec 2025",
           highlights: [
-            "Launched ERP integrations for more than 35 distributors, including Python ETL pipelines, on-premises EDI connectors, and real-time pricing.",
+            "Launched and stabilized ERP integrations for 35+ clients, including ETL, EDI connectors, and near-real-time pricing.",
             "Built exporters that send orders, payments, credit requests, and price edits back into each client's ERP.",
-            "Owned integrations across dozens of ERPs, from scoping with client IT teams through launch and support.",
+            "Owned integrations across dozens of ERPs, from scoping with client IT teams through go-live and support.",
             "Turned one-off client builds into reusable ERP integrations, so each new client starts from shared, tested code.",
           ],
         },
