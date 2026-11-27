@@ -3,6 +3,9 @@ dist/
 .astro/
 .DS_Store
 
+# Local copy of Rx Price Watch data for previewing the page
+public/rx-data/
+
 # Chat API
 api/.venv/
 api/build/

@@ -12,6 +12,8 @@ My personal website, with an "Ask about Adam" chatbot. The site is built with As
 
 The chatbot answers from `/profile.json`, which is built from `src/data/`, plus a private notes file kept outside this repo.
 
+The Rx Price Watch page (`/rx-price-watch/`) reads JSON files published by the [rx-price-watch](https://github.com/spauldia/rx-price-watch) pipeline. Its data URL is in `src/data/rxWatch.ts`.
+
 ## Running the site locally
 
 You'll need Node 24.
