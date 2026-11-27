@@ -52,7 +52,7 @@ export const profile: Profile = {
   ],
   email: "spaulding872@gmail.com",
   links: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/in/adam-m-spaulding-3b751aa0" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/adammichaelspaulding" },
     { label: "GitHub", href: "https://github.com/spauldia" },
   ],
   skills: [
