@@ -1,0 +1,641 @@
+---
+import Base from "../layouts/Base.astro";
+import { rxWatch } from "../data/rxWatch";
+---
+
+<Base
+  title="Rx Price Watch"
+  description="Weekly changes in what U.S. pharmacies pay for drugs, and how prices moved for drugs on the FDA shortage list."
+>
+  <main
+    class="rx"
+    data-data-url={rxWatch.dataUrl}
+    data-shortages-shown={rxWatch.shortagesShown}
+    data-search-results={rxWatch.searchResults}
+  >
+    <div class="container rx-container">
+      <header class="rx-header">
+        <p class="eyebrow">Project</p>
+        <h1>Rx Price Watch</h1>
+        <span class="rule" aria-hidden="true"></span>
+        <p class="lede">
+          What U.S. retail pharmacies pay for drugs, from CMS's weekly National Average Drug Acquisition Cost (NADAC)
+          survey, next to the FDA drug shortage list. A data pipeline on AWS refreshes it every week.
+        </p>
+        <p class="status" data-status>Loading the latest data...</p>
+      </header>
+
+      <section class="rx-section" aria-labelledby="movers-title">
+        <h2 id="movers-title">Biggest price changes</h2>
+        <p class="note" data-movers-note></p>
+        <div class="movers">
+          <div>
+            <h3>Up</h3>
+            <div class="table-scroll">
+              <table class="rx-table">
+                <thead>
+                  <tr><th scope="col">Drug</th><th scope="col">Before</th><th scope="col">Now</th><th scope="col">Change</th></tr>
+                </thead>
+                <tbody data-rows="increases"></tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h3>Down</h3>
+            <div class="table-scroll">
+              <table class="rx-table">
+                <thead>
+                  <tr><th scope="col">Drug</th><th scope="col">Before</th><th scope="col">Now</th><th scope="col">Change</th></tr>
+                </thead>
+                <tbody data-rows="decreases"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="rx-section" aria-labelledby="shortages-title">
+        <h2 id="shortages-title">Drugs in shortage</h2>
+        <p class="note" data-shortages-note></p>
+        <div class="table-scroll">
+          <table class="rx-table">
+            <thead>
+              <tr>
+                <th scope="col">Drug</th>
+                <th scope="col">Shortage posted</th>
+                <th scope="col">Price then</th>
+                <th scope="col">Now</th>
+                <th scope="col">Change</th>
+              </tr>
+            </thead>
+            <tbody data-rows="shortages"></tbody>
+          </table>
+        </div>
+        <button class="button outline" type="button" data-show-all hidden>Show all</button>
+      </section>
+
+      <section class="rx-section" aria-labelledby="lookup-title" id="lookup">
+        <h2 id="lookup-title">Look up a drug</h2>
+        <label class="search-label" for="drug-search">Drug name and strength</label>
+        <input id="drug-search" class="search" type="search" placeholder="For example, amoxicillin 500 mg" autocomplete="off" />
+        <ul class="results" data-results></ul>
+        <figure class="chart" data-chart hidden>
+          <figcaption data-chart-title></figcaption>
+          <svg data-chart-svg viewBox="0 0 640 260" role="img"></svg>
+          <p class="note" data-chart-note></p>
+        </figure>
+      </section>
+
+      <section class="rx-section about-data" aria-labelledby="about-title">
+        <h2 id="about-title">About the data</h2>
+        <ul>
+          <li>NADAC is what pharmacies pay to buy a drug, per tablet, mL or gram. It is not what patients pay.</li>
+          <li>
+            Each drug's price is the median across its packages (NDCs) that week. Most generic prices update once a
+            month.
+          </li>
+          <li>
+            Shortages are matched to prices by NDC. Most shortages are hospital injectables that NADAC doesn't cover,
+            so only some have a price.
+          </li>
+          <li>This page is for information only. It is not medical, pricing or purchasing advice.</li>
+          <li>
+            Sources: <a href="https://data.medicaid.gov">CMS NADAC on data.medicaid.gov</a>{" and the "}
+            <a href="https://open.fda.gov/apis/drug/drugshortages/">FDA drug shortage list on openFDA</a>{". "}
+            <a href={rxWatch.codeUrl}>View the code</a>.
+          </li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .rx {
+    padding: 96px 0;
+  }
+
+  .rx-container {
+    max-width: 920px;
+  }
+
+  .rx-header {
+    text-align: center;
+  }
+
+  .rx h1 {
+    margin: 14px 0 0;
+    font-family: var(--display);
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  .lede {
+    max-width: 660px;
+    margin: 0 auto 12px;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+
+  .status {
+    margin: 0;
+    color: var(--accent);
+    font-family: var(--caps);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .rx-section {
+    padding: 40px 0 8px;
+    border-top: 1px solid var(--rule);
+    margin-top: 40px;
+  }
+
+  .rx-section h2 {
+    margin: 0 0 8px;
+    font-family: var(--display);
+    font-size: 1.9rem;
+    font-weight: 400;
+  }
+
+  .rx-section h3 {
+    margin: 16px 0 8px;
+    color: var(--accent);
+    font-family: var(--caps);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .note {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .movers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .rx-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  .rx-table th {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--muted);
+    font-weight: 600;
+    text-align: left;
+  }
+
+  .rx-table :global(td) {
+    padding: 8px 6px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  .rx-table :global(:is(th, td):not(:first-child)) {
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  .rx :global(.drug-link) {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--link);
+    font: inherit;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  .rx :global(.up) {
+    color: #b3261e;
+  }
+
+  .rx :global(.down) {
+    color: #1e7b45;
+  }
+
+  .button.outline {
+    margin-top: 16px;
+    border-color: var(--navy);
+    background: none;
+    color: var(--navy);
+    cursor: pointer;
+  }
+
+  .search-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  .search {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    font: inherit;
+  }
+
+  .results {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .results :global(li + li) {
+    border-top: 1px solid var(--rule);
+  }
+
+  .results :global(.drug-link) {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 10px 4px;
+    text-decoration: none;
+  }
+
+  .chart {
+    margin: 24px 0 0;
+  }
+
+  .chart figcaption {
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .chart svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    color: var(--muted);
+  }
+
+  .about-data ul {
+    padding-left: 20px;
+  }
+
+  .about-data li + li {
+    margin-top: 6px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .rx :global(.up) {
+      color: #f2b8b5;
+    }
+
+    .rx :global(.down) {
+      color: #8fd6a8;
+    }
+  }
+</style>
+
+<script>
+  interface Summary {
+    as_of: string;
+    first_week: string;
+    weeks: number;
+    drugs: number;
+    current_shortages: number;
+    priced_shortages: number;
+  }
+
+  interface Mover {
+    drug: string;
+    slug: string;
+    unit: string;
+    price_before: number;
+    price_now: number;
+    change_pct: number;
+  }
+
+  interface MoversReport {
+    as_of: string;
+    compared_to: string | null;
+    increases: Mover[];
+    decreases: Mover[];
+  }
+
+  interface ShortageImpact {
+    drug: string;
+    slug: string;
+    unit: string;
+    generic_name: string;
+    posted: string;
+    baseline_week: string;
+    baseline_price: number;
+    price_now: number;
+    change_pct: number;
+  }
+
+  interface ShortageReport {
+    current_shortages: number;
+    items: ShortageImpact[];
+  }
+
+  interface DrugIndexEntry {
+    drug: string;
+    slug: string;
+    unit: string;
+    price: number;
+  }
+
+  interface PricePoint {
+    week: string;
+    price: number;
+  }
+
+  interface DrugHistory {
+    drug: string;
+    unit: string;
+    points: PricePoint[];
+  }
+
+  type DrugShard = Record<string, DrugHistory>;
+
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const CHART = { width: 640, height: 260, left: 64, right: 16, top: 16, bottom: 32 };
+  const DATE_FORMAT = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+
+  function find<T extends Element>(root: ParentNode, selector: string): T {
+    const element = root.querySelector<T>(selector);
+    if (!element) {
+      throw new Error(`Rx Price Watch page is missing ${selector}`);
+    }
+    return element;
+  }
+
+  function formatPrice(price: number): string {
+    return `$${price.toFixed(price < 1 ? 4 : 2)}`;
+  }
+
+  function formatChange(changePct: number): string {
+    return `${changePct > 0 ? "+" : ""}${changePct.toFixed(1)}%`;
+  }
+
+  function formatDate(isoDate: string): string {
+    return DATE_FORMAT.format(new Date(`${isoDate}T00:00:00Z`));
+  }
+
+  function shardOf(slug: string): string {
+    return slug.slice(-8, -6);
+  }
+
+  function cell(text: string, className = ""): HTMLTableCellElement {
+    const td = document.createElement("td");
+    td.textContent = text;
+    td.className = className;
+    return td;
+  }
+
+  function changeCell(changePct: number): HTMLTableCellElement {
+    return cell(formatChange(changePct), changePct > 0 ? "up" : "down");
+  }
+
+  function setUpPage(root: HTMLElement): void {
+    const dataUrl = root.dataset.dataUrl ?? "";
+    const shortagesShown = Number(root.dataset.shortagesShown ?? "15");
+    const searchResults = Number(root.dataset.searchResults ?? "10");
+    const status = find<HTMLElement>(root, "[data-status]");
+    const searchInput = find<HTMLInputElement>(root, "#drug-search");
+    const results = find<HTMLUListElement>(root, "[data-results]");
+    const chart = find<HTMLElement>(root, "[data-chart]");
+    let latestWeek = "";
+    let indexRequest: Promise<DrugIndexEntry[]> | null = null;
+    const shardRequests = new Map<string, Promise<DrugShard>>();
+
+    async function fetchJson<T>(path: string): Promise<T> {
+      const response = await fetch(`${dataUrl}/${path}`);
+      if (!response.ok) {
+        throw new Error(`${path} returned ${response.status}`);
+      }
+      return (await response.json()) as T;
+    }
+
+    function drugButton(drug: string, slug: string): HTMLButtonElement {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "drug-link";
+      button.textContent = drug;
+      button.addEventListener("click", () => void showDrug(slug));
+      return button;
+    }
+
+    function drugCell(drug: string, slug: string): HTMLTableCellElement {
+      const td = document.createElement("td");
+      td.append(drugButton(drug, slug));
+      return td;
+    }
+
+    function renderMovers(report: MoversReport): void {
+      const note = find<HTMLElement>(root, "[data-movers-note]");
+      if (!report.compared_to) {
+        note.textContent = "Not enough weeks loaded yet to compare prices.";
+        return;
+      }
+      note.textContent = `Price per unit on ${formatDate(report.as_of)} compared with ${formatDate(report.compared_to)}.`;
+      for (const kind of ["increases", "decreases"] as const) {
+        const body = find<HTMLTableSectionElement>(root, `[data-rows="${kind}"]`);
+        body.replaceChildren(
+          ...report[kind].map((mover) => {
+            const row = document.createElement("tr");
+            row.append(
+              drugCell(mover.drug, mover.slug),
+              cell(formatPrice(mover.price_before)),
+              cell(formatPrice(mover.price_now)),
+              changeCell(mover.change_pct),
+            );
+            return row;
+          }),
+        );
+      }
+    }
+
+    function renderShortages(report: ShortageReport): void {
+      const note = find<HTMLElement>(root, "[data-shortages-note]");
+      const body = find<HTMLTableSectionElement>(root, '[data-rows="shortages"]');
+      const showAll = find<HTMLButtonElement>(root, "[data-show-all]");
+      note.textContent =
+        `${report.items.length} of the ${report.current_shortages.toLocaleString("en-US")} current FDA shortages have a NADAC price. ` +
+        "Price then is the first weekly price on or after the shortage was posted.";
+      const rows = report.items.map((item) => {
+        const row = document.createElement("tr");
+        row.append(
+          drugCell(item.drug, item.slug),
+          cell(formatDate(item.posted)),
+          cell(`${formatPrice(item.baseline_price)} (${item.baseline_week.slice(0, 4)})`),
+          cell(formatPrice(item.price_now)),
+          changeCell(item.change_pct),
+        );
+        return row;
+      });
+      body.replaceChildren(...rows.slice(0, shortagesShown));
+      if (rows.length > shortagesShown) {
+        showAll.hidden = false;
+        showAll.addEventListener("click", () => {
+          body.replaceChildren(...rows);
+          showAll.hidden = true;
+        });
+      }
+    }
+
+    async function loadHistory(slug: string): Promise<DrugHistory> {
+      const shard = shardOf(slug);
+      let request = shardRequests.get(shard);
+      if (!request) {
+        request = fetchJson<DrugShard>(`drugs/${shard}.json`);
+        shardRequests.set(shard, request);
+      }
+      const history = (await request)[slug];
+      if (!history) {
+        throw new Error(`No history for ${slug}`);
+      }
+      return history;
+    }
+
+    function loadIndex(): Promise<DrugIndexEntry[]> {
+      indexRequest ??= fetchJson<DrugIndexEntry[]>("drugs/index.json");
+      return indexRequest;
+    }
+
+    async function search(query: string): Promise<void> {
+      const words = query.toLowerCase().split(/\s+/).filter(Boolean);
+      if (words.length === 0) {
+        results.replaceChildren();
+        return;
+      }
+      const index = await loadIndex();
+      const matches = index
+        .filter((entry) => words.every((word) => entry.drug.toLowerCase().includes(word)))
+        .slice(0, searchResults);
+      results.replaceChildren(
+        ...matches.map((entry) => {
+          const item = document.createElement("li");
+          const button = drugButton(entry.drug, entry.slug);
+          const price = document.createElement("span");
+          price.textContent = `${formatPrice(entry.price)} per ${entry.unit}`;
+          button.append(price);
+          item.append(button);
+          return item;
+        }),
+      );
+    }
+
+    function svgElement(name: string, attributes: Record<string, string | number>): SVGElement {
+      const element = document.createElementNS(SVG_NS, name);
+      for (const [key, value] of Object.entries(attributes)) {
+        element.setAttribute(key, String(value));
+      }
+      return element;
+    }
+
+    function svgText(text: string, attributes: Record<string, string | number>): SVGElement {
+      const element = svgElement("text", { fill: "currentColor", "font-size": 12, ...attributes });
+      element.textContent = text;
+      return element;
+    }
+
+    function drawChart(history: DrugHistory): void {
+      const svg = find<SVGSVGElement>(chart, "[data-chart-svg]");
+      const first = history.points[0];
+      const last = history.points[history.points.length - 1];
+      const start = Date.parse(first.week);
+      const end = Math.max(Date.parse(latestWeek || last.week), start + 1);
+      const prices = history.points.map((point) => point.price);
+      const lowest = Math.min(...prices);
+      const highest = Math.max(...prices);
+      const low = lowest * 0.9;
+      const high = highest * 1.1;
+      const x = (week: string) =>
+        CHART.left + ((Date.parse(week) - start) / (end - start)) * (CHART.width - CHART.left - CHART.right);
+      const y = (price: number) =>
+        CHART.top + (1 - (price - low) / (high - low)) * (CHART.height - CHART.top - CHART.bottom);
+
+      let path = `M ${x(first.week)} ${y(first.price)}`;
+      for (const point of history.points.slice(1)) {
+        path += ` H ${x(point.week)} V ${y(point.price)}`;
+      }
+      path += ` H ${CHART.width - CHART.right}`;
+
+      const baseline = CHART.height - CHART.bottom;
+      const right = CHART.width - CHART.right;
+      svg.replaceChildren(
+        svgElement("line", { x1: CHART.left, x2: right, y1: baseline, y2: baseline, stroke: "currentColor" }),
+        svgText(formatPrice(highest), { x: CHART.left - 8, y: y(highest) + 4, "text-anchor": "end" }),
+        svgText(formatPrice(lowest), { x: CHART.left - 8, y: y(lowest) + 4, "text-anchor": "end" }),
+        svgText(first.week.slice(0, 4), { x: CHART.left, y: CHART.height - 8 }),
+        svgText((latestWeek || last.week).slice(0, 4), { x: right, y: CHART.height - 8, "text-anchor": "end" }),
+        svgElement("path", { d: path, fill: "none", style: "stroke: var(--accent)", "stroke-width": 2 }),
+      );
+      svg.setAttribute(
+        "aria-label",
+        `Price per ${history.unit} went from ${formatPrice(first.price)} in ${first.week.slice(0, 4)} to ${formatPrice(last.price)}.`,
+      );
+    }
+
+    async function showDrug(slug: string): Promise<void> {
+      const title = find<HTMLElement>(chart, "[data-chart-title]");
+      const note = find<HTMLElement>(chart, "[data-chart-note]");
+      chart.hidden = false;
+      title.textContent = "Loading...";
+      document.getElementById("lookup")?.scrollIntoView({ behavior: "smooth" });
+      try {
+        const history = await loadHistory(slug);
+        title.textContent = `${history.drug} (price per ${history.unit})`;
+        const last = history.points[history.points.length - 1];
+        note.textContent =
+          `${history.points.length} price changes since ${formatDate(history.points[0].week)}. ` +
+          `Latest: ${formatPrice(last.price)} from ${formatDate(last.week)}.`;
+        drawChart(history);
+      } catch {
+        title.textContent = "That drug's history couldn't load. Try again later.";
+        note.textContent = "";
+      }
+    }
+
+    searchInput.addEventListener("input", () => void search(searchInput.value).catch(() => results.replaceChildren()));
+
+    Promise.all([
+      fetchJson<Summary>("summary.json"),
+      fetchJson<MoversReport>("movers.json"),
+      fetchJson<ShortageReport>("shortages.json"),
+    ])
+      .then(([summary, movers, shortages]) => {
+        latestWeek = summary.as_of;
+        status.textContent =
+          `Prices as of ${formatDate(summary.as_of)} · ${summary.drugs.toLocaleString("en-US")} drugs · ` +
+          `${summary.weeks.toLocaleString("en-US")} weeks since ${formatDate(summary.first_week)}`;
+        renderMovers(movers);
+        renderShortages(shortages);
+      })
+      .catch(() => {
+        status.textContent = "The data couldn't load. Try again later.";
+      });
+  }
+
+  const pageRoot = document.querySelector<HTMLElement>(".rx");
+  if (pageRoot) {
+    setUpPage(pageRoot);
+  }
+</script>

@@ -1,9 +1,12 @@
+export type ProjectDemo = { type: "chat" } | { type: "page"; href: string };
+
 export interface Project {
     name: string;
     summary: string;
     highlights: string[];
     tech: string[];
     codeUrl: string;
+    demo: ProjectDemo;
 }
 
 export const projects: Project[] = [
@@ -18,6 +21,7 @@ export const projects: Project[] = [
         ],
         tech: ["Python", "FastAPI", "AWS Lambda", "DynamoDB", "Terraform", "GitHub Actions", "Claude API"],
         codeUrl: "https://github.com/spauldia/adammichaelspaulding.com/tree/main/api",
+        demo: { type: "chat" },
     },
     {
         name: "Resume Pipeline",
@@ -30,5 +34,20 @@ export const projects: Project[] = [
         ],
         tech: ["Python", "Pydantic", "GitHub Actions", "GitHub REST API", "Word automation"],
         codeUrl: "https://github.com/spauldia/resume-pipeline",
+        demo: { type: "page", href: "/resume/" },
+    },
+    {
+        name: "Rx Price Watch",
+        summary: "A weekly data pipeline that tracks what U.S. pharmacies pay for about 6,000 drugs back to 2013, and how prices moved for drugs on the FDA shortage list.",
+        highlights: [
+            "Python pipeline on AWS Lambda, run every week by EventBridge Scheduler. It loads only weeks it hasn't seen, so any run is safe to repeat.",
+            "DuckDB builds a Parquet data lake on S3 from CMS's weekly NADAC survey (about 680 weeks) and snapshots of the FDA shortage list.",
+            "Data quality checks stop a bad file before it reaches the lake or the page, and a CloudWatch alarm emails Adam when a run fails.",
+            "Matches shortages to prices by converting the FDA's 10-digit NDCs to NADAC's 11-digit format.",
+            "Publishes only the JSON files that changed to S3 behind CloudFront, and costs about a third of a cent a month to run. Terraform (IaC) for all infrastructure and GitHub Actions with OIDC for deploys.",
+        ],
+        tech: ["Python", "DuckDB", "Parquet", "AWS Lambda", "S3", "CloudFront", "EventBridge", "Terraform", "GitHub Actions"],
+        codeUrl: "https://github.com/spauldia/rx-price-watch",
+        demo: { type: "page", href: "/rx-price-watch/" },
     },
 ];
